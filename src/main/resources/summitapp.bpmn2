@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_approvalItem" structureRef="Boolean" />
+
+  <process processType="Private" isExecutable="true" id="com.sample.process" name="summitapp." >
+
+    <!-- process variables -->
+    <property id="approval" itemSubjectRef="_approvalItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="Start"  isInterrupting="false"/>
+    <userTask id="_2" name="Manager Approval" >
+      <ioSpecification>
+        <dataInput id="_2_managerApprovalInput" name="managerApproval" />
+        <dataInput id="_2_TaskNameInput" name="TaskName" />
+        <dataOutput id="_2_taskApprovalOutput" name="taskApproval" />
+        <inputSet>
+          <dataInputRefs>_2_managerApprovalInput</dataInputRefs>
+          <dataInputRefs>_2_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_2_taskApprovalOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>approval</sourceRef>
+        <targetRef>_2_managerApprovalInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Manager Approval</from>
+          <to xsi:type="tFormalExpression">_2_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_2_taskApprovalOutput</sourceRef>
+        <targetRef>approval</targetRef>
+      </dataOutputAssociation>
+    </userTask>
+    <complexGateway id="_3" name="Is Approved" gatewayDirection="Diverging" />
+    <endEvent id="_4" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <endEvent id="_5" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
+    <sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3" />
+    <sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4" />
+    <sequenceFlow id="_3-_5" sourceRef="_3" targetRef="_5" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="com.sample.process" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="91" y="119" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="213" y="121" width="173" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="454" y="123" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="660" y="75" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="663" y="226" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_1-_2" >
+        <di:waypoint x="115" y="143" />
+        <di:waypoint x="299" y="145" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_3" >
+        <di:waypoint x="299" y="145" />
+        <di:waypoint x="478" y="147" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_4" >
+        <di:waypoint x="478" y="147" />
+        <di:waypoint x="684" y="99" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_5" >
+        <di:waypoint x="478" y="147" />
+        <di:waypoint x="687" y="250" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>
